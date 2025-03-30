@@ -11,9 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
+import { Menu, Search, Heart } from "lucide-react";
 import AuthModal from "@/components/auth/AuthModal";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -88,9 +89,27 @@ const Navbar = () => {
             <span className="text-2xl font-bold gradient-heading">Cluj Party Mapster</span>
           </Link>
           
+          {/* Search bar - New addition */}
+          <div className="hidden md:flex relative max-w-md w-full mx-4">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+              type="search" 
+              placeholder="Search for clubs or events..." 
+              className="pl-10 bg-muted/50"
+            />
+          </div>
+          
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
               <>
+                {/* Liked Events Button - New addition */}
+                <Button variant="ghost" asChild className="hidden md:flex">
+                  <Link to="/favorites">
+                    <Heart className="mr-2 h-4 w-4 text-party" />
+                    Liked Events
+                  </Link>
+                </Button>
+                
                 <Button variant="ghost" asChild>
                   <Link to="/map">Party Map</Link>
                 </Button>

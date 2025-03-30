@@ -25,6 +25,10 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     return null;
   }
 
+  const handleSlideChange = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <div className="space-y-3">
       <div className="flex items-baseline gap-2">
@@ -35,7 +39,7 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
       <div className="w-full relative">
         <Carousel
           className="w-full"
-          onSelect={(index) => setCurrentIndex(index)}
+          onSelect={handleSlideChange}
         >
           <CarouselContent>
             {clubs.map((club) => (
@@ -73,7 +77,7 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
   return (
     <Card className="w-full border-0 overflow-hidden group transition-all duration-300 relative">
       {club.image && (
-        <div className="w-full h-[400px] overflow-hidden relative">
+        <div className="w-full h-[300px] overflow-hidden relative">
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
           <img 
             src={club.image} 
@@ -81,7 +85,7 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-            <h2 className="text-3xl font-bold mb-2">{club.name}</h2>
+            <h2 className="text-2xl font-bold mb-2">{club.name}</h2>
             
             <div className="flex items-center gap-2 mb-3">
               <Badge variant="outline" className="bg-background/30 backdrop-blur-sm">
@@ -97,7 +101,7 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
               )}
             </div>
             
-            <p className="text-sm text-muted-foreground mb-4 max-w-2xl">
+            <p className="text-sm text-muted-foreground mb-4 max-w-2xl line-clamp-2">
               {club.description}
             </p>
             
@@ -131,7 +135,7 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
             </div>
             
             <Button className="mt-4 party-button">
-              Learn More <ArrowRight className="h-4 w-4" />
+              Learn More <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
         </div>

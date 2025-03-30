@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import MapComponent from "@/components/map/MapComponent";
 import HorizontalClubList from "@/components/clubs/HorizontalClubList";
@@ -15,9 +15,50 @@ import Footer from "@/components/layout/Footer";
 const MapPage = () => {
   const [activeTab, setActiveTab] = useState<string>("partyType");
   const [mapOpen, setMapOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
   
   const clubsByMusicGenre = getClubsByMusicGenre();
   const clubsByPartyType = getClubsByPartyType();
+  
+  // Detect scroll position and update active tab
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!contentRef.current) return;
+      
+      const scrollPosition = contentRef.current.scrollTop;
+      const threshold = 300; // Adjust based on your layout
+      
+      if (scrollPosition < threshold && activeTab !== "partyType") {
+        setActiveTab("partyType");
+      } else if (scrollPosition >= threshold && activeTab !== "musicGenre") {
+        setActiveTab("musicGenre");
+      }
+    };
+    
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      contentElement.addEventListener("scroll", handleScroll);
+    }
+    
+    return () => {
+      if (contentElement) {
+        contentElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [activeTab]);
+  
+  // Scroll to the appropriate section when tab changes
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    
+    if (!contentRef.current) return;
+    
+    if (value === "partyType") {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (value === "musicGenre") {
+      contentRef.current.scrollTo({ top: 400, behavior: "smooth" }); // Adjust based on your layout
+    }
+  };
   
   return (
     <RequireAuth>
@@ -39,7 +80,7 @@ const MapPage = () => {
           
           {/* Content Selection Tabs */}
           <div className="w-full bg-muted/30 backdrop-blur-sm border-y border-muted p-2 sticky top-16 z-10">
-            <Tabs defaultValue="partyType" value={activeTab} onValueChange={setActiveTab}>
+            <Tabs defaultValue="partyType" value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="mx-auto">
                 <TabsTrigger value="partyType">Party Types</TabsTrigger>
                 <TabsTrigger value="musicGenre">Music Genres</TabsTrigger>
@@ -48,9 +89,13 @@ const MapPage = () => {
           </div>
           
           {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto bg-gradient-to-b from-background/90 to-background">
-            <Tabs value={activeTab} className="mt-2">
-              <TabsContent value="partyType" className="m-0 p-4 space-y-12">
+          <div 
+            ref={contentRef}
+            className="flex-1 overflow-y-auto bg-gradient-to-b from-background/90 to-background"
+          >
+            <div className="p-4 space-y-12">
+              {/* Party Types Section */}
+              <div id="partyType-section" className="space-y-12">
                 {clubsByPartyType.map(({ partyType, clubs }, index) => 
                   index === 0 ? (
                     <CarouselClubList
@@ -66,9 +111,10 @@ const MapPage = () => {
                     />
                   )
                 )}
-              </TabsContent>
+              </div>
               
-              <TabsContent value="musicGenre" className="m-0 p-4 space-y-12">
+              {/* Music Genres Section */}
+              <div id="musicGenre-section" className="space-y-12 pt-8">
                 {clubsByMusicGenre.map(({ genre, clubs }, index) => 
                   index === 0 ? (
                     <CarouselClubList
@@ -84,8 +130,8 @@ const MapPage = () => {
                     />
                   )
                 )}
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
           </div>
           
           <Footer />

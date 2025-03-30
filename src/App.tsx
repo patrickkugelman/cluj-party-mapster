@@ -19,6 +19,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/map" element={<MapPage />} />
+          <Route path="/favorites" element={<NotFound />} />
+          <Route path="/profile" element={<NotFound />} />
           <Route path="/contact" element={<NotFound />} />
           <Route path="/faq" element={<NotFound />} />
           <Route path="/cookies" element={<NotFound />} />
