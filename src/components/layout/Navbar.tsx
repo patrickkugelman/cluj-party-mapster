@@ -91,9 +91,9 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-                <Link to="/map">
-                  <Button variant="ghost">Map</Button>
-                </Link>
+                <Button variant="ghost" asChild>
+                  <Link to="/map">Party Map</Link>
+                </Button>
                 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
