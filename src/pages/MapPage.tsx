@@ -2,44 +2,61 @@
 import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import MapComponent from "@/components/map/MapComponent";
-import ClubList from "@/components/clubs/ClubList";
+import HorizontalClubList from "@/components/clubs/HorizontalClubList";
 import RequireAuth from "@/components/auth/RequireAuth";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getClubsByMusicGenre, getClubsByPartyType } from "@/data/clubData";
 
 const MapPage = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const [activeTab, setActiveTab] = useState<string>("partyType");
+  
+  const clubsByMusicGenre = getClubsByMusicGenre();
+  const clubsByPartyType = getClubsByPartyType();
+  
   return (
     <RequireAuth>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         
-        <main className="pt-16 h-[calc(100vh-4rem)] relative">
-          <div className="flex h-full">
-            {/* Sidebar with club list */}
-            <div
-              className={`h-full bg-card border-r border-muted transition-all duration-300 ${
-                isSidebarOpen ? "w-80" : "w-0 overflow-hidden"
-              }`}
-            >
-              <ClubList />
-            </div>
-            
-            {/* Map */}
-            <div className="flex-1 relative">
-              <MapComponent />
+        <main className="pt-16 flex-1 flex flex-col overflow-hidden">
+          {/* Map Section - Take up the top portion */}
+          <div className="w-full h-[60vh] relative">
+            <MapComponent />
+          </div>
+          
+          {/* Content Selection Tabs */}
+          <div className="w-full bg-muted/30 backdrop-blur-sm border-y border-muted p-2">
+            <Tabs defaultValue="partyType" value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="mx-auto">
+                <TabsTrigger value="partyType">Party Types</TabsTrigger>
+                <TabsTrigger value="musicGenre">Music Genres</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+          
+          {/* Scrollable Content Area */}
+          <div className="flex-1 overflow-y-auto bg-gradient-to-b from-background/90 to-background">
+            <Tabs value={activeTab} className="mt-2">
+              <TabsContent value="partyType" className="m-0 p-4 space-y-8">
+                {clubsByPartyType.map(({ partyType, clubs }) => (
+                  <HorizontalClubList 
+                    key={partyType} 
+                    title={partyType} 
+                    clubs={clubs} 
+                  />
+                ))}
+              </TabsContent>
               
-              {/* Sidebar toggle button */}
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute top-4 left-4 z-10 bg-background/80 backdrop-blur-sm"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              >
-                {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
-              </Button>
-            </div>
+              <TabsContent value="musicGenre" className="m-0 p-4 space-y-8">
+                {clubsByMusicGenre.map(({ genre, clubs }) => (
+                  <HorizontalClubList 
+                    key={genre} 
+                    title={genre} 
+                    clubs={clubs} 
+                  />
+                ))}
+              </TabsContent>
+            </Tabs>
           </div>
         </main>
       </div>

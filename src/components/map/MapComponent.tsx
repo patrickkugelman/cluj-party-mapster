@@ -5,10 +5,11 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { getMapboxToken, saveMapboxToken, hasMapboxToken } from "@/utils/mapboxToken";
+import { getMapboxToken, saveMapboxToken } from "@/utils/mapboxToken";
 import { clubData } from "@/data/clubData";
+import { Music, MapPin } from "lucide-react";
 
 const MapComponent = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -17,14 +18,10 @@ const MapComponent = () => {
   const [mapboxToken, setMapboxToken] = useState("");
   const markers = useRef<mapboxgl.Marker[]>([]);
   const { toast } = useToast();
+  const [mapInitialized, setMapInitialized] = useState(false);
 
   useEffect(() => {
-    // Check if we have a Mapbox token, if not show dialog
-    if (!hasMapboxToken()) {
-      setTokenDialogOpen(true);
-      return;
-    }
-
+    // Always attempt to initialize the map
     initializeMap();
     
     return () => {
@@ -38,13 +35,15 @@ const MapComponent = () => {
 
   const initializeMap = () => {
     const token = getMapboxToken();
-    if (!token || !mapContainer.current) return;
+    if (!mapContainer.current) return;
 
     try {
       mapboxgl.accessToken = token;
       
       // Cluj-Napoca coordinates
       const clujCoordinates = [23.6, 46.77];
+      
+      if (map.current) return; // Don't reinitialize if map exists
       
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
@@ -64,9 +63,31 @@ const MapComponent = () => {
       // Once map is loaded, add markers
       map.current.on("load", () => {
         addClubMarkers();
+        setMapInitialized(true);
+        
+        toast({
+          title: "Map loaded successfully",
+          description: "You can now explore clubs around Cluj-Napoca",
+        });
+      });
+      
+      map.current.on("error", (e) => {
+        console.error("Mapbox error:", e);
+        
+        if (!mapInitialized) {
+          setTokenDialogOpen(true);
+        }
+        
+        toast({
+          variant: "destructive",
+          title: "Map Error",
+          description: "Could not initialize map properly. You might need to provide a valid Mapbox token.",
+        });
       });
     } catch (error) {
       console.error("Error initializing map:", error);
+      setTokenDialogOpen(true);
+      
       toast({
         variant: "destructive",
         title: "Map Error",
@@ -86,7 +107,7 @@ const MapComponent = () => {
     clubData.forEach(club => {
       // Create custom element for marker
       const el = document.createElement("div");
-      el.className = "w-6 h-6 bg-club rounded-full flex items-center justify-center animate-pulse-glow cursor-pointer";
+      el.className = `w-6 h-6 ${club.activeParty ? 'bg-party' : 'bg-club'} rounded-full flex items-center justify-center ${club.activeParty ? 'animate-pulse-glow' : ''} cursor-pointer`;
       
       // Create marker
       const marker = new mapboxgl.Marker(el)
@@ -100,6 +121,8 @@ const MapComponent = () => {
                 ${club.activeParty ? 
                   `<p class="text-sm font-bold text-party">🎉 Active party tonight!</p>` : 
                   ''}
+                <p class="text-sm"><strong>Music:</strong> ${club.musicGenres.join(', ')}</p>
+                <p class="text-sm"><strong>Party Type:</strong> ${club.partyType}</p>
               </div>
             `)
         )
@@ -123,6 +146,14 @@ const MapComponent = () => {
     
     saveMapboxToken(mapboxToken);
     setTokenDialogOpen(false);
+    
+    // Clean up existing map if any
+    if (map.current) {
+      map.current.remove();
+      map.current = null;
+    }
+    
+    // Reinitialize with new token
     initializeMap();
     
     toast({
@@ -133,14 +164,30 @@ const MapComponent = () => {
 
   return (
     <>
-      <div className="w-full h-[calc(100vh-4rem)] relative bg-background">
+      <div className="w-full h-full relative bg-background">
         <div ref={mapContainer} className="absolute inset-0" />
+        
+        {/* Map legend overlay */}
+        <div className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm p-3 rounded-lg border border-muted z-10">
+          <h3 className="text-sm font-medium mb-2">Map Legend</h3>
+          <div className="flex items-center mb-1">
+            <div className="w-4 h-4 rounded-full bg-party mr-2 animate-pulse-glow"></div>
+            <span className="text-xs">Active party</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-4 h-4 rounded-full bg-club mr-2"></div>
+            <span className="text-xs">Inactive club</span>
+          </div>
+        </div>
         
         {/* Token Dialog */}
         <Dialog open={tokenDialogOpen} onOpenChange={setTokenDialogOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Mapbox Token Required</DialogTitle>
+              <DialogDescription>
+                Please enter your Mapbox token to enable the map functionality.
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleTokenSubmit} className="space-y-4">
               <div className="space-y-2">
