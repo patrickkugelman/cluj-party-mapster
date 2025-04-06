@@ -25,6 +25,7 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     return null;
   }
 
+  // Updated the handler to accept React's API call and extract the index
   const handleSlideChange = (index: number) => {
     setCurrentIndex(index);
   };
