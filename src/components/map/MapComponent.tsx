@@ -4,13 +4,14 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useToast } from "@/components/ui/use-toast";
 import { getMapboxToken } from "@/utils/mapboxToken";
-import { clubData } from "@/data/clubData";
+import { getCurrentClubData } from "@/utils/aiPartyUpdater";
 
-// Import our new components
+// Import our components
 import MapMarkerManager from "./MapMarkerManager";
 import MapLegend from "./MapLegend";
 import MapTokenDialog from "./MapTokenDialog";
 import MapInitializer from "./MapInitializer";
+import PartyUpdater from "@/components/ai/PartyUpdater";
 
 const MapComponent = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -18,6 +19,7 @@ const MapComponent = () => {
   const [tokenDialogOpen, setTokenDialogOpen] = useState(false);
   const [mapInitialized, setMapInitialized] = useState(false);
   const { toast } = useToast();
+  const [clubs, setClubs] = useState(getCurrentClubData());
 
   useEffect(() => {
     // Always attempt to initialize the map on first load
@@ -65,10 +67,15 @@ const MapComponent = () => {
         />
         
         {/* Map Marker Manager */}
-        {map && <MapMarkerManager map={map} clubs={clubData} />}
+        {map && <MapMarkerManager map={map} clubs={clubs} />}
         
         {/* Map Legend */}
         <MapLegend />
+        
+        {/* AI Party Updater */}
+        <div className="absolute top-4 left-4 z-10">
+          <PartyUpdater />
+        </div>
         
         {/* Token Dialog */}
         <MapTokenDialog 

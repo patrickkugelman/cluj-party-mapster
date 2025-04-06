@@ -7,7 +7,7 @@ const MapLegend: React.FC = () => {
       <h3 className="text-sm font-medium mb-2">Map Legend</h3>
       <div className="flex items-center mb-1">
         <div className="w-4 h-4 rounded-full bg-party mr-2 animate-pulse-glow"></div>
-        <span className="text-xs">Active party</span>
+        <span className="text-xs">Active party (AI updated daily)</span>
       </div>
       <div className="flex items-center">
         <div className="w-4 h-4 rounded-full bg-club mr-2"></div>
