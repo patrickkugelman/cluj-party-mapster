@@ -1,18 +1,24 @@
 
-import { useState } from "react";
-import { Club, clubData } from "@/data/clubData";
+import { useState, useEffect } from "react";
+import { Club, searchClubs } from "@/data/clubData";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { MapPin, Music, Star, Clock } from "lucide-react";
 
-const ClubList = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+interface ClubListProps {
+  initialSearchTerm?: string;
+}
+
+const ClubList = ({ initialSearchTerm = "" }: ClubListProps) => {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [filteredClubs, setFilteredClubs] = useState<Club[]>([]);
   
-  const filteredClubs = clubData.filter((club) => 
-    club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    club.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Effect to handle search
+  useEffect(() => {
+    const results = searchClubs(searchTerm);
+    setFilteredClubs(results);
+  }, [searchTerm]);
 
   return (
     <div className="h-full w-full flex flex-col p-4 overflow-auto">

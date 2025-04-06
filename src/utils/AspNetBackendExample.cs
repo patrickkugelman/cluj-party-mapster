@@ -17,15 +17,15 @@ namespace ClubApp.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; }
-        public string Category { get; set; }
-        public string Location { get; set; }
+        public string Address { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string[] Tags { get; set; }
-        public DateTime Date { get; set; }
-        public int Capacity { get; set; }
-        public bool IsFeatured { get; set; }
+        public bool ActiveParty { get; set; }
+        public double Rating { get; set; }
+        public string OpeningHours { get; set; }
+        public string Image { get; set; }
+        public string[] MusicGenres { get; set; }
+        public string PartyType { get; set; }
     }
 }
 
@@ -40,32 +40,107 @@ namespace ClubApp.Controllers
             new Club
             {
                 Id = "1",
-                Name = "Neon Dance Party",
-                Description = "Experience the ultimate neon dance party with immersive lights and top DJs",
+                Name = "NOA Club & Restaurant",
+                Description = "Upscale club with a great atmosphere and music.",
+                Address = "Str. Republicii 109, Cluj-Napoca",
+                Latitude = 46.7688,
+                Longitude = 23.5994,
+                ActiveParty = true,
+                Rating = 4.5,
+                OpeningHours = "22:00 - 05:00",
                 Image = "/images/club1.jpg",
-                Category = "Nightclub",
-                Location = "Downtown",
-                Latitude = 40.712776,
-                Longitude = -74.005974,
-                Tags = new[] { "Dance", "Electronic", "Neon" },
-                Date = DateTime.Now.AddDays(3),
-                Capacity = 250,
-                IsFeatured = true
+                MusicGenres = new[] { "House", "Pop", "Commercial" },
+                PartyType = "Regular"
             },
             new Club
             {
                 Id = "2",
-                Name = "Jazz on the Roof",
-                Description = "Sophisticated jazz night on our scenic rooftop lounge",
+                Name = "Form Space",
+                Description = "Popular venue for electronic music events.",
+                Address = "Str. Horea 4, Cluj-Napoca",
+                Latitude = 46.7710,
+                Longitude = 23.5794,
+                ActiveParty = true,
+                Rating = 4.7,
+                OpeningHours = "23:00 - 06:00",
                 Image = "/images/club2.jpg",
-                Category = "Jazz",
-                Location = "Uptown",
-                Latitude = 40.713776,
-                Longitude = -74.015974,
-                Tags = new[] { "Jazz", "Live Music", "Rooftop" },
-                Date = DateTime.Now.AddDays(5),
-                Capacity = 100,
-                IsFeatured = false
+                MusicGenres = new[] { "Techno", "EDM", "Drum and Bass" },
+                PartyType = "EDM"
+            },
+            new Club
+            {
+                Id = "3",
+                Name = "Phi18",
+                Description = "Trendy rooftop club with amazing views of the city.",
+                Address = "Str. Piezisa 18, Cluj-Napoca",
+                Latitude = 46.7639,
+                Longitude = 23.5625,
+                ActiveParty = true,
+                Rating = 4.3,
+                OpeningHours = "21:00 - 04:00",
+                Image = "/images/club3.jpg",
+                MusicGenres = new[] { "R&B", "Hip Hop", "Reggaeton" },
+                PartyType = "Themed"
+            },
+            new Club
+            {
+                Id = "8",
+                Name = "Euphoria Lounge",
+                Description = "Modern club with stunning panoramic views of Cluj.",
+                Address = "Str. Piezisa 2, Cluj-Napoca",
+                Latitude = 46.7642,
+                Longitude = 23.5618,
+                ActiveParty = true,
+                Rating = 4.6,
+                OpeningHours = "22:00 - 06:00",
+                Image = "/images/club8.jpg",
+                MusicGenres = new[] { "House", "Electronic", "Pop" },
+                PartyType = "Regular"
+            },
+            new Club
+            {
+                Id = "9",
+                Name = "Piezisa Social Club",
+                Description = "Trendy bar and club with open terrace and great cocktails.",
+                Address = "Str. Piezisa 10, Cluj-Napoca",
+                Latitude = 46.7637,
+                Longitude = 23.5621,
+                ActiveParty = true,
+                Rating = 4.4,
+                OpeningHours = "20:00 - 04:00",
+                Image = "/images/club9.jpg",
+                MusicGenres = new[] { "Funk", "Soul", "Disco" },
+                PartyType = "Regular"
+            },
+            new Club
+            {
+                Id = "10",
+                Name = "Skyline Club",
+                Description = "Exclusive rooftop club with premium service and amazing views.",
+                Address = "Str. Piezisa 14, Cluj-Napoca",
+                Latitude = 46.7635,
+                Longitude = 23.5628,
+                ActiveParty = false,
+                Rating = 4.9,
+                OpeningHours = "21:00 - 05:00",
+                Image = "/images/club10.jpg",
+                MusicGenres = new[] { "Deep House", "Lounge", "Ambient" },
+                PartyType = "Themed"
+            },
+            new Club
+            {
+                Id = "11",
+                Name = "Vertigo Bar",
+                Description = "High-energy club popular with students and young professionals.",
+                Address = "Str. Piezisa 20, Cluj-Napoca",
+                Latitude = 46.7631,
+                Longitude = 23.5632,
+                ActiveParty = true,
+                Rating = 4.2,
+                OpeningHours = "22:30 - 05:30",
+                Image = "/images/club11.jpg",
+                MusicGenres = new[] { "Hip Hop", "Trap", "R&B" },
+                PartyType = "Students"
             },
             // More clubs would be added here, typically from a database
         };
@@ -95,16 +170,44 @@ namespace ClubApp.Controllers
         [HttpGet("featured")]
         public ActionResult<IEnumerable<Club>> GetFeatured()
         {
-            var featuredClubs = _clubs.Where(c => c.IsFeatured).ToList();
+            var featuredClubs = _clubs.Where(c => c.Rating >= 4.5).ToList();
             return featuredClubs;
         }
 
-        // GET: api/clubs/category/{categoryName}
-        [HttpGet("category/{categoryName}")]
-        public ActionResult<IEnumerable<Club>> GetByCategory(string categoryName)
+        // GET: api/clubs/category/{partyType}
+        [HttpGet("category/{partyType}")]
+        public ActionResult<IEnumerable<Club>> GetByPartyType(string partyType)
         {
-            var categoryClubs = _clubs.Where(c => c.Category.Equals(categoryName, StringComparison.OrdinalIgnoreCase)).ToList();
+            var categoryClubs = _clubs.Where(c => c.PartyType.Equals(partyType, StringComparison.OrdinalIgnoreCase)).ToList();
             return categoryClubs;
+        }
+        
+        // GET: api/clubs/active
+        [HttpGet("active")]
+        public ActionResult<IEnumerable<Club>> GetActiveParties()
+        {
+            var activeClubs = _clubs.Where(c => c.ActiveParty).ToList();
+            return activeClubs;
+        }
+
+        // GET: api/clubs/search/{query}
+        [HttpGet("search/{query}")]
+        public ActionResult<IEnumerable<Club>> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return _clubs;
+
+            var normalizedQuery = query.ToLower();
+            
+            var results = _clubs.Where(c => 
+                c.Name.ToLower().Contains(normalizedQuery) ||
+                c.Description.ToLower().Contains(normalizedQuery) ||
+                c.Address.ToLower().Contains(normalizedQuery) ||
+                c.MusicGenres.Any(genre => genre.ToLower().Contains(normalizedQuery)) ||
+                c.PartyType.ToLower().Contains(normalizedQuery)
+            ).ToList();
+            
+            return results;
         }
         
         // POST: api/clubs
