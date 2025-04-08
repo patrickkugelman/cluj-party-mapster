@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Club } from "@/data/clubData";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,8 +25,9 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     return null;
   }
 
-  const handleSlideChange = (api: { selectedScrollSnap: () => number }) => {
-    const index = api.selectedScrollSnap();
+  // Fix: Use proper typing for the onSelect event
+  // The Carousel component expects a function that takes an event parameter
+  const handleSlideChange = (index: number) => {
     setCurrentIndex(index);
   };
 
@@ -39,7 +41,11 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
       <div className="w-full relative">
         <Carousel
           className="w-full"
-          onSelect={handleSlideChange}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          onScrollSnapChange={handleSlideChange}
         >
           <CarouselContent>
             {clubs.map((club) => (
