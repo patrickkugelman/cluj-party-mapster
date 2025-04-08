@@ -11,6 +11,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface CarouselClubListProps {
@@ -20,15 +21,19 @@ interface CarouselClubListProps {
 
 const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
 
   if (clubs.length === 0) {
     return null;
   }
 
-  // Fix: Use proper typing for the onSelect event
-  // The Carousel component expects a function that takes an event parameter
-  const handleSlideChange = (index: number) => {
-    setCurrentIndex(index);
+  // Use the onSelect callback with the API
+  const handleApiChange = (api: CarouselApi | null) => {
+    if (!api) return;
+    api.on("select", () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    });
+    setApi(api);
   };
 
   return (
@@ -45,7 +50,7 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
             align: "start",
             loop: true,
           }}
-          onScrollSnapChange={handleSlideChange}
+          onCreated={handleApiChange}
         >
           <CarouselContent>
             {clubs.map((club) => (
