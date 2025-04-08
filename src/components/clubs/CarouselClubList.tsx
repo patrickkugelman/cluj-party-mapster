@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Club } from "@/data/clubData";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,8 +24,8 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     return null;
   }
 
-  // Updated the handler to accept React's API call and extract the index
-  const handleSlideChange = (index: number) => {
+  const handleSlideChange = (api: { selectedScrollSnap: () => number }) => {
+    const index = api.selectedScrollSnap();
     setCurrentIndex(index);
   };
 
@@ -58,7 +57,6 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
           </div>
         </Carousel>
         
-        {/* Indicators */}
         <div className="flex justify-center gap-1 mt-4">
           {clubs.map((_, index) => (
             <div

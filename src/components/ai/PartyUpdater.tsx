@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { checkAndUpdateParties, updatePartiesWithAI, PartyUpdateInfo } from "@/utils/aiPartyUpdater";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { RefreshCw } from "lucide-react";
 
 export const PartyUpdater = () => {
   const { toast } = useToast();
@@ -64,9 +64,9 @@ export const PartyUpdater = () => {
         disabled={isUpdating}
       >
         {isUpdating ? (
-          <ReloadIcon className="h-4 w-4 mr-2 animate-spin" />
+          <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
         ) : (
-          <ReloadIcon className="h-4 w-4 mr-2" />
+          <RefreshCw className="h-4 w-4 mr-2" />
         )}
         {isUpdating ? "Updating..." : "Update Now"}
       </Button>
