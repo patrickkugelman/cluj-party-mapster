@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Club } from "@/data/clubData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -27,14 +27,20 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     return null;
   }
 
-  // Use the onSelect callback with the API
-  const handleApiChange = (api: CarouselApi | null) => {
+  // Use useEffect to set up the API event listener
+  useEffect(() => {
     if (!api) return;
-    api.on("select", () => {
+    
+    const onSelect = () => {
       setCurrentIndex(api.selectedScrollSnap());
-    });
-    setApi(api);
-  };
+    };
+    
+    api.on("select", onSelect);
+    // Cleanup listener on unmount
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   return (
     <div className="space-y-3">
@@ -50,7 +56,7 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
             align: "start",
             loop: true,
           }}
-          onCreated={handleApiChange}
+          setApi={setApi}
         >
           <CarouselContent>
             {clubs.map((club) => (
