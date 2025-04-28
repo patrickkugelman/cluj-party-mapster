@@ -3,9 +3,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Club } from "@/data/clubData";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Music, Star, Clock, Ticket } from "lucide-react";
+import { MapPin, Music, Star, Clock, Ticket, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/context/CartContext";
 
 interface ClubDetailsDialogProps {
   club: Club;
@@ -16,13 +17,14 @@ interface ClubDetailsDialogProps {
 const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps) => {
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const { toast } = useToast();
+  const { addToCart } = useCart();
 
-  const handlePurchase = () => {
+  const handleAddToCart = () => {
+    addToCart(club, ticketQuantity);
     toast({
-      title: "Tickets purchased!",
-      description: `${ticketQuantity} ticket${ticketQuantity > 1 ? 's' : ''} for ${club.name} have been purchased. Check your email for confirmation.`,
+      title: "Added to cart",
+      description: `${ticketQuantity} ticket${ticketQuantity > 1 ? 's' : ''} for ${club.name} have been added to your cart.`,
     });
-    onOpenChange(false);
   };
 
   return (
@@ -113,9 +115,21 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
               </div>
             </div>
             
-            <Button onClick={handlePurchase} className="w-full mt-6 party-button">
-              <Ticket className="h-4 w-4 mr-1" /> Purchase Tickets
-            </Button>
+            <div className="flex gap-2 mt-6">
+              <Button onClick={handleAddToCart} className="w-full party-button">
+                <ShoppingCart className="h-4 w-4 mr-1" /> Add to Cart
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  handleAddToCart();
+                  onOpenChange(false);
+                }}
+              >
+                <Ticket className="h-4 w-4 mr-1" /> Buy Now
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
