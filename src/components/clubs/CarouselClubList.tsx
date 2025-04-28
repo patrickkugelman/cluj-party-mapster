@@ -3,7 +3,7 @@ import { Club, addToFavorites, removeFromFavorites, isFavorite } from "@/data/cl
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Music, MapPin, Star, Clock, ArrowRight, Heart } from "lucide-react";
+import { Music, MapPin, Star, Clock, ArrowRight, Heart, Ticket } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { useToast } from "@/hooks/use-toast";
 import ClubDetailsDialog from "./ClubDetailsDialog";
