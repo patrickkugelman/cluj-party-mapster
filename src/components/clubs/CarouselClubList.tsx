@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from "react";
-import { Club } from "@/data/clubData";
-import { Card, CardContent } from "@/components/ui/card";
+import { Club, addToFavorites, removeFromFavorites, isFavorite } from "@/data/clubData";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Music, MapPin, Star, Clock, ArrowRight } from "lucide-react";
+import { Music, MapPin, Star, Clock, ArrowRight, Heart, Ticket } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +13,8 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 interface CarouselClubListProps {
   title: string;
@@ -90,6 +92,47 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
 };
 
 const FeaturedClubCard = ({ club }: { club: Club }) => {
+  const { toast } = useToast();
+  const [favorited, setFavorited] = useState(false);
+  const [ticketDialog, setTicketDialog] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  
+  // Check if club is favorited on component mount
+  useEffect(() => {
+    setFavorited(isFavorite(club.id));
+  }, [club.id]);
+
+  const handleFavoriteToggle = () => {
+    if (favorited) {
+      removeFromFavorites(club.id);
+      setFavorited(false);
+      toast({
+        title: "Removed from favorites",
+        description: `${club.name} has been removed from your favorites`,
+      });
+    } else {
+      addToFavorites(club.id);
+      setFavorited(true);
+      toast({
+        title: "Added to favorites",
+        description: `${club.name} has been added to your favorites`,
+      });
+    }
+  };
+  
+  const handleBuyTicket = () => {
+    setTicketDialog(true);
+  };
+  
+  const handlePurchase = () => {
+    toast({
+      title: "Tickets purchased!",
+      description: `${quantity} ticket${quantity > 1 ? 's' : ''} for ${club.name} have been purchased. Check your email for confirmation.`,
+      variant: "success",
+    });
+    setTicketDialog(false);
+  };
+
   return (
     <Card className="w-full border-0 overflow-hidden group transition-all duration-300 relative">
       {club.image && (
@@ -100,6 +143,16 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
             alt={club.name} 
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
+          <div className="absolute top-4 right-4 z-20">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className={`rounded-full ${favorited ? 'bg-red-500 text-white border-none' : 'bg-background/30 backdrop-blur-sm'}`}
+              onClick={handleFavoriteToggle}
+            >
+              <Heart className={`h-5 w-5 ${favorited ? 'fill-current' : ''}`} />
+            </Button>
+          </div>
           <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
             <h2 className="text-2xl font-bold mb-2">{club.name}</h2>
             
@@ -150,12 +203,65 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
               </div>
             </div>
             
-            <Button className="mt-4 party-button">
-              Learn More <ArrowRight className="h-4 w-4 ml-1" />
-            </Button>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Button className="party-button">
+                Learn More <ArrowRight className="h-4 w-4 ml-1" />
+              </Button>
+              <Button variant="outline" className="bg-background/30 backdrop-blur-sm" onClick={handleBuyTicket}>
+                <Ticket className="h-4 w-4 mr-1" /> Buy Tickets
+              </Button>
+            </div>
           </div>
         </div>
       )}
+      
+      <Dialog open={ticketDialog} onOpenChange={setTicketDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Buy Tickets for {club.name}</DialogTitle>
+            <DialogDescription>
+              Purchase tickets for the upcoming event at {club.name}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium">Date</h3>
+                <p>This Friday, 10:00 PM</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium">Price</h3>
+                <p>50 RON per ticket</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium">Quantity</h3>
+                <div className="flex items-center space-x-2 mt-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  >-</Button>
+                  <span className="w-8 text-center">{quantity}</span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >+</Button>
+                </div>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium">Total</h3>
+                <p className="text-xl font-bold">{quantity * 50} RON</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button onClick={handlePurchase} className="party-button">
+              Purchase Tickets
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };

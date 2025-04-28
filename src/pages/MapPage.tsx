@@ -6,19 +6,22 @@ import HorizontalClubList from "@/components/clubs/HorizontalClubList";
 import CarouselClubList from "@/components/clubs/CarouselClubList";
 import RequireAuth from "@/components/auth/RequireAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Map } from "lucide-react";
-import { getClubsByMusicGenre, getClubsByPartyType } from "@/data/clubData";
+import { Map, User } from "lucide-react";
+import { getClubsByMusicGenre, getClubsByPartyType, getFavoriteClubDetails } from "@/data/clubData";
+import UserProfile from "@/components/profile/UserProfile";
 import Footer from "@/components/layout/Footer";
 
 const MapPage = () => {
   const [activeTab, setActiveTab] = useState<string>("partyType");
   const [mapOpen, setMapOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   
   const clubsByMusicGenre = getClubsByMusicGenre();
   const clubsByPartyType = getClubsByPartyType();
+  const favoriteClubs = getFavoriteClubDetails();
   
   // Detect scroll position and update active tab
   useEffect(() => {
@@ -57,6 +60,8 @@ const MapPage = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     } else if (value === "musicGenre") {
       contentRef.current.scrollTo({ top: 400, behavior: "smooth" }); // Adjust based on your layout
+    } else if (value === "favorites") {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
   
@@ -67,7 +72,7 @@ const MapPage = () => {
         
         <main className="pt-16 flex-1 flex flex-col overflow-hidden">
           {/* Map Button - Fixed position */}
-          <div className="fixed bottom-6 right-6 z-10">
+          <div className="fixed bottom-6 right-6 z-10 flex flex-col gap-2">
             <Button 
               size="lg" 
               className="rounded-full shadow-lg bg-party hover:bg-party/90 flex items-center gap-2"
@@ -76,6 +81,21 @@ const MapPage = () => {
               <Map className="h-5 w-5" />
               <span>Map View</span>
             </Button>
+            
+            <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  size="lg" 
+                  className="rounded-full shadow-lg bg-secondary hover:bg-secondary/90 flex items-center gap-2"
+                >
+                  <User className="h-5 w-5" />
+                  <span>Profile</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+                <UserProfile />
+              </DialogContent>
+            </Dialog>
           </div>
           
           {/* Content Selection Tabs */}
@@ -84,6 +104,7 @@ const MapPage = () => {
               <TabsList className="mx-auto">
                 <TabsTrigger value="partyType">Party Types</TabsTrigger>
                 <TabsTrigger value="musicGenre">Music Genres</TabsTrigger>
+                <TabsTrigger value="favorites">Favorites</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -95,42 +116,68 @@ const MapPage = () => {
           >
             <div className="p-4 space-y-12">
               {/* Party Types Section */}
-              <div id="partyType-section" className="space-y-12">
-                {clubsByPartyType.map(({ partyType, clubs }, index) => 
-                  index === 0 ? (
-                    <CarouselClubList
-                      key={partyType}
-                      title={partyType}
-                      clubs={clubs}
-                    />
-                  ) : (
-                    <HorizontalClubList 
-                      key={partyType} 
-                      title={partyType} 
-                      clubs={clubs} 
-                    />
-                  )
-                )}
-              </div>
+              {activeTab === "partyType" && (
+                <div id="partyType-section" className="space-y-12">
+                  {clubsByPartyType.map(({ partyType, clubs }, index) => 
+                    index === 0 ? (
+                      <CarouselClubList
+                        key={partyType}
+                        title={partyType}
+                        clubs={clubs}
+                      />
+                    ) : (
+                      <HorizontalClubList 
+                        key={partyType} 
+                        title={partyType} 
+                        clubs={clubs} 
+                      />
+                    )
+                  )}
+                </div>
+              )}
               
               {/* Music Genres Section */}
-              <div id="musicGenre-section" className="space-y-12 pt-8">
-                {clubsByMusicGenre.map(({ genre, clubs }, index) => 
-                  index === 0 ? (
+              {activeTab === "musicGenre" && (
+                <div id="musicGenre-section" className="space-y-12 pt-8">
+                  {clubsByMusicGenre.map(({ genre, clubs }, index) => 
+                    index === 0 ? (
+                      <CarouselClubList
+                        key={genre}
+                        title={genre}
+                        clubs={clubs}
+                      />
+                    ) : (
+                      <HorizontalClubList 
+                        key={genre} 
+                        title={genre} 
+                        clubs={clubs} 
+                      />
+                    )
+                  )}
+                </div>
+              )}
+              
+              {/* Favorites Section */}
+              {activeTab === "favorites" && (
+                <div id="favorites-section" className="space-y-12 pt-8">
+                  {favoriteClubs.length > 0 ? (
                     <CarouselClubList
-                      key={genre}
-                      title={genre}
-                      clubs={clubs}
+                      title="Your Favorite Clubs"
+                      clubs={favoriteClubs}
                     />
                   ) : (
-                    <HorizontalClubList 
-                      key={genre} 
-                      title={genre} 
-                      clubs={clubs} 
-                    />
-                  )
-                )}
-              </div>
+                    <div className="text-center py-16">
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted">
+                        <Heart className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                      <h2 className="mt-4 text-xl font-semibold">No Favorites Yet</h2>
+                      <p className="mt-2 text-muted-foreground max-w-md mx-auto">
+                        You haven't added any clubs to your favorites. Click the heart icon on any club card to save it here.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           

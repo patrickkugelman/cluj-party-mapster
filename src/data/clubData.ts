@@ -26,7 +26,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.5,
     openingHours: "22:00 - 05:00",
-    image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["House", "Pop", "Commercial"],
     partyType: "Regular"
   },
@@ -40,7 +40,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.7,
     openingHours: "23:00 - 06:00",
-    image: "https://images.unsplash.com/photo-1574391573318-e3bcd4fa44b9?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Techno", "EDM", "Drum and Bass"],
     partyType: "EDM"
   },
@@ -54,7 +54,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.3,
     openingHours: "21:00 - 04:00",
-    image: "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1578736641330-3155e606cd40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["R&B", "Hip Hop", "Reggaeton"],
     partyType: "Themed"
   },
@@ -68,7 +68,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.2,
     openingHours: "22:00 - 05:00",
-    image: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1571204829887-3b8d69e4094d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Retro", "80s", "90s", "2000s"],
     partyType: "Students"
   },
@@ -82,7 +82,7 @@ export const clubData: Club[] = [
     activeParty: false,
     rating: 4.4,
     openingHours: "20:00 - 03:00",
-    image: "https://images.unsplash.com/photo-1583244532610-9ddb18af77b2?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5463ebf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Rock", "Indie", "Alternative"],
     partyType: "Live Music"
   },
@@ -96,7 +96,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.1,
     openingHours: "22:00 - 05:00",
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Disco", "Funk", "Dance"],
     partyType: "Regular"
   },
@@ -110,7 +110,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.8,
     openingHours: "23:00 - 06:00",
-    image: "https://images.unsplash.com/photo-1551818905-29c07d4802d0?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1581325649603-7367f6280d5e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Techno", "House", "Minimal"],
     partyType: "EDM"
   },
@@ -125,7 +125,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.6,
     openingHours: "22:00 - 06:00",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["House", "Electronic", "Pop"],
     partyType: "Regular"
   },
@@ -139,7 +139,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.4,
     openingHours: "20:00 - 04:00",
-    image: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Funk", "Soul", "Disco"],
     partyType: "Regular"
   },
@@ -153,7 +153,7 @@ export const clubData: Club[] = [
     activeParty: false,
     rating: 4.9,
     openingHours: "21:00 - 05:00",
-    image: "https://images.unsplash.com/photo-1578736641330-3155e606cd40?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Deep House", "Lounge", "Ambient"],
     partyType: "Themed"
   },
@@ -167,7 +167,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.2,
     openingHours: "22:30 - 05:30",
-    image: "https://images.unsplash.com/photo-1571204829887-3b8d69e4094d?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1603766806347-25e4b5e3d7f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Hip Hop", "Trap", "R&B"],
     partyType: "Students"
   },
@@ -181,7 +181,7 @@ export const clubData: Club[] = [
     activeParty: false,
     rating: 4.7,
     openingHours: "19:00 - 02:00",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5463ebf?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1574391573318-e3bcd4fa44b9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Jazz", "Blues", "Acoustic"],
     partyType: "Live Music"
   },
@@ -195,7 +195,7 @@ export const clubData: Club[] = [
     activeParty: true,
     rating: 4.5,
     openingHours: "23:00 - 07:00",
-    image: "https://images.unsplash.com/photo-1581325649603-7367f6280d5e?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1583244532610-9ddb18af77b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Techno", "Minimal", "Industrial"],
     partyType: "EDM"
   },
@@ -209,9 +209,37 @@ export const clubData: Club[] = [
     activeParty: false,
     rating: 4.3,
     openingHours: "18:00 - 02:00",
-    image: "https://images.unsplash.com/photo-1603766806347-25e4b5e3d7f3?auto=format&fit=crop&q=80&w=1000",
+    image: "https://images.unsplash.com/photo-1578736641330-3155e606cd40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     musicGenres: ["Chill", "Lounge", "Acoustic"],
     partyType: "Regular"
+  },
+  {
+    id: "15",
+    name: "Janis Club",
+    description: "Lively club offering a wide range of music and dance events.",
+    address: "Str. Memorandumului 13, Cluj-Napoca",
+    lat: 46.7695,
+    lng: 23.5861,
+    activeParty: true,
+    rating: 4.4,
+    openingHours: "20:00 - 04:00",
+    image: "https://images.unsplash.com/photo-1581325649603-7367f6280d5e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+    musicGenres: ["Rock", "Pop", "Alternative"],
+    partyType: "Regular"
+  },
+  {
+    id: "16",
+    name: "Booha Bar",
+    description: "Cozy bar with great music and diverse cultural events.",
+    address: "Str. Napoca 8, Cluj-Napoca",
+    lat: 46.7689,
+    lng: 23.5866,
+    activeParty: false,
+    rating: 4.3,
+    openingHours: "18:00 - 02:00",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5463ebf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+    musicGenres: ["Indie", "Folk", "Acoustic"],
+    partyType: "Live Music"
   }
 ];
 
@@ -219,11 +247,25 @@ export const clubData: Club[] = [
 export const getClubsByMusicGenre = () => {
   const genresMap: Record<string, Club[]> = {};
   
+  // First get all unique genres
+  const allGenres = new Set<string>();
   clubData.forEach(club => {
     club.musicGenres.forEach(genre => {
-      if (!genresMap[genre]) {
-        genresMap[genre] = [];
-      }
+      allGenres.add(genre);
+    });
+  });
+  
+  // Sort genres alphabetically
+  const sortedGenres = Array.from(allGenres).sort();
+  
+  // Initialize empty arrays for all genres
+  sortedGenres.forEach(genre => {
+    genresMap[genre] = [];
+  });
+  
+  // Add clubs to each genre
+  clubData.forEach(club => {
+    club.musicGenres.forEach(genre => {
       genresMap[genre].push(club);
     });
   });
@@ -232,8 +274,7 @@ export const getClubsByMusicGenre = () => {
     .map(([genre, clubs]) => ({
       genre,
       clubs
-    }))
-    .sort((a, b) => a.genre.localeCompare(b.genre));
+    }));
 };
 
 // Group clubs by party type for horizontal scrolling sections
@@ -277,3 +318,38 @@ export const getActivePartyClubs = (): Club[] => {
   return clubData.filter(club => club.activeParty);
 };
 
+// Local storage keys
+export const FAVORITE_CLUBS_KEY = 'favoriteClubs';
+
+// Add a club to favorites
+export const addToFavorites = (clubId: string): void => {
+  const favorites = getFavoriteClubs();
+  if (!favorites.includes(clubId)) {
+    favorites.push(clubId);
+    localStorage.setItem(FAVORITE_CLUBS_KEY, JSON.stringify(favorites));
+  }
+};
+
+// Remove a club from favorites
+export const removeFromFavorites = (clubId: string): void => {
+  const favorites = getFavoriteClubs();
+  const updatedFavorites = favorites.filter(id => id !== clubId);
+  localStorage.setItem(FAVORITE_CLUBS_KEY, JSON.stringify(updatedFavorites));
+};
+
+// Get all favorite clubs
+export const getFavoriteClubs = (): string[] => {
+  const favorites = localStorage.getItem(FAVORITE_CLUBS_KEY);
+  return favorites ? JSON.parse(favorites) : [];
+};
+
+// Check if a club is favorited
+export const isFavorite = (clubId: string): boolean => {
+  return getFavoriteClubs().includes(clubId);
+};
+
+// Get all favorite club objects
+export const getFavoriteClubDetails = (): Club[] => {
+  const favoriteIds = getFavoriteClubs();
+  return clubData.filter(club => favoriteIds.includes(club.id));
+};
