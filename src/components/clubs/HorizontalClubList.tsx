@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Club, addToFavorites, removeFromFavorites, isFavorite } from "@/data/clubData";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,7 +39,6 @@ const ClubCard = ({ club }: { club: Club }) => {
   const [ticketDialog, setTicketDialog] = useState(false);
   const [quantity, setQuantity] = useState(1);
   
-  // Check if club is favorited on component mount
   useEffect(() => {
     setFavorited(isFavorite(club.id));
   }, [club.id]);
@@ -71,7 +69,6 @@ const ClubCard = ({ club }: { club: Club }) => {
     toast({
       title: "Tickets purchased!",
       description: `${quantity} ticket${quantity > 1 ? 's' : ''} for ${club.name} have been purchased. Check your email for confirmation.`,
-      variant: "success",
     });
     setTicketDialog(false);
   };
@@ -125,7 +122,7 @@ const ClubCard = ({ club }: { club: Club }) => {
         
         <p className="line-clamp-2 text-xs text-muted-foreground">{club.description}</p>
         
-        <div className="flex flex-wrap gap-1 mt-2">
+        <div className="flex flex-wrap gap-1 mb-2">
           {club.musicGenres.slice(0, 2).map((genre) => (
             <Badge key={genre} variant="secondary" className="text-xs">
               {genre}

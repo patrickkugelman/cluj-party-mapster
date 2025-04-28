@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Club, addToFavorites, removeFromFavorites, isFavorite } from "@/data/clubData";
 import { Card } from "@/components/ui/card";
@@ -29,7 +28,6 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     return null;
   }
 
-  // Use useEffect to set up the API event listener
   useEffect(() => {
     if (!api) return;
     
@@ -38,7 +36,6 @@ const CarouselClubList = ({ title, clubs }: CarouselClubListProps) => {
     };
     
     api.on("select", onSelect);
-    // Cleanup listener on unmount
     return () => {
       api.off("select", onSelect);
     };
@@ -97,7 +94,6 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
   const [ticketDialog, setTicketDialog] = useState(false);
   const [quantity, setQuantity] = useState(1);
   
-  // Check if club is favorited on component mount
   useEffect(() => {
     setFavorited(isFavorite(club.id));
   }, [club.id]);
@@ -128,7 +124,6 @@ const FeaturedClubCard = ({ club }: { club: Club }) => {
     toast({
       title: "Tickets purchased!",
       description: `${quantity} ticket${quantity > 1 ? 's' : ''} for ${club.name} have been purchased. Check your email for confirmation.`,
-      variant: "success",
     });
     setTicketDialog(false);
   };

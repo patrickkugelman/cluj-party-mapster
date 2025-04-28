@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { getFavoriteClubDetails } from "@/data/clubData";
 import { Club } from "@/data/clubData";
-import { Heart, Camera, User, X } from "lucide-react";
+import { Heart, Camera, User, Star, Music, Ticket } from "lucide-react";
 
 interface UserData {
   name: string;
@@ -31,11 +31,9 @@ const UserProfile = () => {
   const [editedData, setEditedData] = useState<UserData>(userData);
   
   useEffect(() => {
-    // Load favorite clubs
     const favorites = getFavoriteClubDetails();
     setFavoriteClubs(favorites);
     
-    // Load user data from localStorage if available
     const savedUserData = localStorage.getItem("userData");
     if (savedUserData) {
       setUserData(JSON.parse(savedUserData));

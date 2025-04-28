@@ -8,7 +8,7 @@ import RequireAuth from "@/components/auth/RequireAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Map, User } from "lucide-react";
+import { Map, User, Heart } from "lucide-react";
 import { getClubsByMusicGenre, getClubsByPartyType, getFavoriteClubDetails } from "@/data/clubData";
 import UserProfile from "@/components/profile/UserProfile";
 import Footer from "@/components/layout/Footer";
