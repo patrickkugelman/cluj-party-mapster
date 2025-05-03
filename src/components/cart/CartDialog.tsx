@@ -1,5 +1,5 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { Minus, Plus, ShoppingBag, X } from "lucide-react";
@@ -37,6 +37,7 @@ const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Your Cart</DialogTitle>
+            <DialogDescription>Your shopping cart is currently empty.</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center justify-center py-8">
             <p className="text-muted-foreground">Your cart is empty</p>
@@ -51,6 +52,7 @@ const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Your Cart</DialogTitle>
+          <DialogDescription>Review your items before checkout.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           {items.map((item) => (

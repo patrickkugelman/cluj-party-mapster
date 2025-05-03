@@ -30,9 +30,11 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
+    addToCart(club, ticketQuantity);
     onOpenChange(false);
-    setCartOpen(true);
+    setTimeout(() => {
+      setCartOpen(true);
+    }, 100);
   };
 
   return (
@@ -44,7 +46,7 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
           </DialogHeader>
           
           {club.image && (
-            <div className="w-full h-64 overflow-hidden rounded-lg">
+            <div className="w-full h-48 overflow-hidden rounded-lg">
               <img 
                 src={club.image} 
                 alt={club.name} 
