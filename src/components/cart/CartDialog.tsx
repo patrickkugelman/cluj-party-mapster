@@ -2,7 +2,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus, ShoppingBag, X } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface CartDialogProps {
   open: boolean;
@@ -10,11 +12,23 @@ interface CartDialogProps {
 }
 
 const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
-  const { items, removeFromCart, updateQuantity, total } = useCart();
+  const { items, removeFromCart, updateQuantity, total, clearCart } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
 
   const handleCheckout = () => {
-    // Implement checkout logic here
-    console.log("Proceeding to checkout with items:", items);
+    setIsProcessing(true);
+    
+    // Simulate a checkout process
+    setTimeout(() => {
+      toast({
+        title: "Purchase complete!",
+        description: `Your ${items.length > 1 ? 'tickets have' : 'ticket has'} been successfully purchased.`,
+      });
+      clearCart();
+      setIsProcessing(false);
+      onOpenChange(false);
+    }, 1500);
   };
 
   if (items.length === 0) {
@@ -81,8 +95,18 @@ const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
               <span className="font-medium">Total</span>
               <span className="font-bold">{total} RON</span>
             </div>
-            <Button className="w-full party-button" onClick={handleCheckout}>
-              Proceed to Checkout
+            <Button 
+              className="w-full party-button" 
+              onClick={handleCheckout} 
+              disabled={isProcessing}
+            >
+              {isProcessing ? (
+                "Processing..."
+              ) : (
+                <>
+                  <ShoppingBag className="h-4 w-4 mr-1" /> Proceed to Checkout
+                </>
+              )}
             </Button>
           </div>
         </div>
