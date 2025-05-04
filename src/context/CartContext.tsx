@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Club } from '@/data/clubData';
 
-interface CartItem {
+export interface CartItem {
   clubId: string;
   clubName: string;
   quantity: number;
