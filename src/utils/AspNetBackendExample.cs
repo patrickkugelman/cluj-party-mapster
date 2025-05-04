@@ -1,13 +1,8 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
-// This is an example of how an ASP.NET Core backend would be structured
-// to support the React frontend you have. This file would be part of an
-// ASP.NET Core Web API project, not your React app.
 
 namespace ClubApp.Models
 {
@@ -26,6 +21,40 @@ namespace ClubApp.Models
         public string Image { get; set; }
         public string[] MusicGenres { get; set; }
         public string PartyType { get; set; }
+    }
+
+    // New models for cart and ticket functionality
+    public class CartItem
+    {
+        public string Id { get; set; }
+        public string ClubId { get; set; }
+        public string UserId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public DateTime DateAdded { get; set; }
+    }
+
+    public class Ticket
+    {
+        public string Id { get; set; }
+        public string ClubId { get; set; }
+        public string UserId { get; set; }
+        public string OrderId { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public string Status { get; set; } // "Valid", "Used", "Expired", etc.
+    }
+
+    public class Order
+    {
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public List<Ticket> Tickets { get; set; }
+        public decimal TotalAmount { get; set; }
+        public DateTime OrderDate { get; set; }
+        public string Status { get; set; } // "Pending", "Completed", "Cancelled"
+        public string PaymentMethod { get; set; }
     }
 }
 
@@ -252,6 +281,191 @@ namespace ClubApp.Controllers
             }
             
             _clubs.Remove(club);
+            
+            return NoContent();
+        }
+    }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CartController : ControllerBase
+    {
+        // In-memory storage for cart items (in a real app, this would be in a database)
+        private static readonly List<ClubApp.Models.CartItem> _cartItems = new List<ClubApp.Models.CartItem>();
+
+        // GET: api/cart/{userId}
+        [HttpGet("{userId}")]
+        public ActionResult<IEnumerable<ClubApp.Models.CartItem>> GetUserCart(string userId)
+        {
+            var userItems = _cartItems.Where(ci => ci.UserId == userId).ToList();
+            return userItems;
+        }
+
+        // POST: api/cart
+        [HttpPost]
+        public ActionResult<ClubApp.Models.CartItem> AddToCart(ClubApp.Models.CartItem cartItem)
+        {
+            // Check if the item is already in the cart
+            var existingItem = _cartItems.FirstOrDefault(
+                ci => ci.UserId == cartItem.UserId && ci.ClubId == cartItem.ClubId);
+            
+            if (existingItem != null)
+            {
+                // Update quantity of existing item
+                existingItem.Quantity += cartItem.Quantity;
+                return Ok(existingItem);
+            }
+            
+            // Add new item
+            cartItem.Id = Guid.NewGuid().ToString();
+            cartItem.DateAdded = DateTime.UtcNow;
+            _cartItems.Add(cartItem);
+            
+            return CreatedAtAction(nameof(GetUserCart), new { userId = cartItem.UserId }, cartItem);
+        }
+
+        // PUT: api/cart/{id}
+        [HttpPut("{id}")]
+        public IActionResult UpdateCartItem(string id, ClubApp.Models.CartItem cartItem)
+        {
+            var existingItem = _cartItems.FirstOrDefault(ci => ci.Id == id);
+            
+            if (existingItem == null)
+            {
+                return NotFound();
+            }
+            
+            // Update item
+            existingItem.Quantity = cartItem.Quantity;
+            
+            return NoContent();
+        }
+
+        // DELETE: api/cart/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCartItem(string id)
+        {
+            var item = _cartItems.FirstOrDefault(ci => ci.Id == id);
+            
+            if (item == null)
+            {
+                return NotFound();
+            }
+            
+            _cartItems.Remove(item);
+            
+            return NoContent();
+        }
+
+        // DELETE: api/cart/user/{userId}
+        [HttpDelete("user/{userId}")]
+        public IActionResult ClearUserCart(string userId)
+        {
+            var userItems = _cartItems.Where(ci => ci.UserId == userId).ToList();
+            
+            foreach (var item in userItems)
+            {
+                _cartItems.Remove(item);
+            }
+            
+            return NoContent();
+        }
+    }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class OrdersController : ControllerBase
+    {
+        private static readonly List<ClubApp.Models.Order> _orders = new List<ClubApp.Models.Order>();
+        private static readonly List<ClubApp.Models.Ticket> _tickets = new List<ClubApp.Models.Ticket>();
+
+        // GET: api/orders/{userId}
+        [HttpGet("user/{userId}")]
+        public ActionResult<IEnumerable<ClubApp.Models.Order>> GetUserOrders(string userId)
+        {
+            var userOrders = _orders.Where(o => o.UserId == userId).ToList();
+            return userOrders;
+        }
+
+        // GET: api/orders/{id}
+        [HttpGet("{id}")]
+        public ActionResult<ClubApp.Models.Order> GetOrderById(string id)
+        {
+            var order = _orders.FirstOrDefault(o => o.Id == id);
+            
+            if (order == null)
+            {
+                return NotFound();
+            }
+            
+            return order;
+        }
+
+        // POST: api/orders
+        [HttpPost]
+        public async Task<ActionResult<ClubApp.Models.Order>> CreateOrder([FromServices] CartController cartController, ClubApp.Models.Order order)
+        {
+            // Generate order ID
+            order.Id = Guid.NewGuid().ToString();
+            order.OrderDate = DateTime.UtcNow;
+            order.Status = "Completed"; // In a real app, this might be "Pending" until payment is processed
+            
+            // Create tickets for each cart item
+            var ticketsList = new List<ClubApp.Models.Ticket>();
+            foreach (var ticket in order.Tickets)
+            {
+                ticket.Id = Guid.NewGuid().ToString();
+                ticket.OrderId = order.Id;
+                ticket.PurchaseDate = DateTime.UtcNow;
+                ticket.Status = "Valid";
+                
+                _tickets.Add(ticket);
+                ticketsList.Add(ticket);
+            }
+            
+            order.Tickets = ticketsList;
+            _orders.Add(order);
+            
+            // Clear the user's cart after successful order
+            await cartController.ClearUserCart(order.UserId);
+            
+            return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+        }
+
+        // GET: api/orders/tickets/{userId}
+        [HttpGet("tickets/{userId}")]
+        public ActionResult<IEnumerable<ClubApp.Models.Ticket>> GetUserTickets(string userId)
+        {
+            var userTickets = _tickets.Where(t => t.UserId == userId).ToList();
+            return userTickets;
+        }
+
+        // GET: api/orders/ticket/{id}
+        [HttpGet("ticket/{id}")]
+        public ActionResult<ClubApp.Models.Ticket> GetTicketById(string id)
+        {
+            var ticket = _tickets.FirstOrDefault(t => t.Id == id);
+            
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            
+            return ticket;
+        }
+        
+        // PUT: api/orders/ticket/{id}
+        [HttpPut("ticket/{id}")]
+        public IActionResult UpdateTicketStatus(string id, [FromBody] string status)
+        {
+            var ticket = _tickets.FirstOrDefault(t => t.Id == id);
+            
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            
+            ticket.Status = status;
             
             return NoContent();
         }
