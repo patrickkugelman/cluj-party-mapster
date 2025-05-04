@@ -21,6 +21,7 @@ import {
   DialogContent
 } from "@/components/ui/dialog";
 import ClubList from "@/components/clubs/ClubList";
+import CartButton from "@/components/cart/CartButton";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -132,6 +133,9 @@ const Navbar = () => {
                   <Link to="/map">Party Map</Link>
                 </Button>
                 
+                {/* Cart Button - Added here */}
+                <CartButton />
+                
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
@@ -163,6 +167,9 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                {/* Show cart button even when not logged in */}
+                <CartButton />
+                
                 <Button variant="ghost" onClick={handleLoginClick}>
                   Log in
                 </Button>

@@ -23,6 +23,7 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
 
   const handleAddToCart = () => {
     addToCart(club, ticketQuantity);
+    
     toast({
       title: "Added to cart",
       description: `${ticketQuantity} ticket${ticketQuantity > 1 ? 's' : ''} for ${club.name} have been added to your cart.`,
@@ -31,10 +32,14 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
 
   const handleBuyNow = () => {
     addToCart(club, ticketQuantity);
+    
+    // Close the current dialog first
     onOpenChange(false);
+    
+    // Set a small timeout to ensure the current dialog closes before opening the cart
     setTimeout(() => {
       setCartOpen(true);
-    }, 100);
+    }, 200);
   };
 
   return (
