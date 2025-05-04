@@ -34,12 +34,12 @@ const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
   if (items.length === 0) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent>
+        <DialogContent className="max-w-[350px]">
           <DialogHeader>
             <DialogTitle>Your Cart</DialogTitle>
             <DialogDescription>Your shopping cart is currently empty.</DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center py-8">
+          <div className="flex flex-col items-center justify-center py-4">
             <p className="text-muted-foreground">Your cart is empty</p>
           </div>
         </DialogContent>
@@ -49,51 +49,51 @@ const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[350px]">
         <DialogHeader>
           <DialogTitle>Your Cart</DialogTitle>
           <DialogDescription>Review your items before checkout.</DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {items.map((item) => (
             <div key={item.clubId} className="flex items-center justify-between py-2">
-              <div className="flex-1">
-                <h4 className="font-medium">{item.clubName}</h4>
-                <p className="text-sm text-muted-foreground">
+              <div className="flex-1 mr-2">
+                <h4 className="font-medium text-sm">{item.clubName}</h4>
+                <p className="text-xs text-muted-foreground">
                   {item.price} RON × {item.quantity}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-6 w-6"
                   onClick={() => updateQuantity(item.clubId, Math.max(1, item.quantity - 1))}
                 >
-                  <Minus className="h-4 w-4" />
+                  <Minus className="h-3 w-3" />
                 </Button>
-                <span className="w-8 text-center">{item.quantity}</span>
+                <span className="w-5 text-center text-sm">{item.quantity}</span>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-6 w-6"
                   onClick={() => updateQuantity(item.clubId, item.quantity + 1)}
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3 w-3" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-6 w-6"
                   onClick={() => removeFromCart(item.clubId)}
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3 w-3" />
                 </Button>
               </div>
             </div>
           ))}
-          <div className="border-t pt-4">
-            <div className="flex justify-between mb-4">
+          <div className="border-t pt-3">
+            <div className="flex justify-between mb-3">
               <span className="font-medium">Total</span>
               <span className="font-bold">{total} RON</span>
             </div>

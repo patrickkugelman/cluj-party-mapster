@@ -39,19 +39,19 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
     // Set a small timeout to ensure the current dialog closes before opening the cart
     setTimeout(() => {
       setCartOpen(true);
-    }, 200);
+    }, 100);
   };
 
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold">{club.name}</DialogTitle>
+            <DialogTitle className="text-xl font-bold">{club.name}</DialogTitle>
           </DialogHeader>
           
           {club.image && (
-            <div className="w-full h-48 overflow-hidden rounded-lg">
+            <div className="w-full h-40 overflow-hidden rounded-lg">
               <img 
                 src={club.image} 
                 alt={club.name} 
@@ -60,7 +60,7 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
             </div>
           )}
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Badge variant="outline">
                 <Star className="h-3 w-3 text-yellow-500 mr-1" /> {club.rating}
@@ -98,9 +98,9 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
               </div>
             </div>
             
-            <div className="border-t pt-4">
-              <h3 className="text-lg font-medium mb-4">Buy Tickets</h3>
-              <div className="space-y-4">
+            <div className="border-t pt-3">
+              <h3 className="text-lg font-medium mb-2">Buy Tickets</h3>
+              <div className="space-y-3">
                 <div>
                   <h4 className="text-sm font-medium">Date</h4>
                   <p className="text-sm text-muted-foreground">This Friday, 10:00 PM</p>
@@ -131,7 +131,7 @@ const ClubDetailsDialog = ({ club, open, onOpenChange }: ClubDetailsDialogProps)
                 </div>
               </div>
               
-              <div className="flex gap-2 mt-6">
+              <div className="flex gap-2 mt-4">
                 <Button onClick={handleAddToCart} className="w-full party-button">
                   <ShoppingCart className="h-4 w-4 mr-1" /> Add to Cart
                 </Button>
